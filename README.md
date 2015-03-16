@@ -1,4 +1,4 @@
-# qualtrics-android
+# qualtrics-android [![Build Status](https://api.shippable.com/projects/55066ec55ab6cc13529b7bc6/badge?branchName=master)](https://app.shippable.com/projects/55066ec55ab6cc13529b7bc6/builds/latest)
 
 ### Important links
 
