@@ -7,6 +7,7 @@
 
 # Java class files
 *.class
+DeveloperKey.java
 
 # generated files
 bin/
