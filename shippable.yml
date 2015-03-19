@@ -15,7 +15,9 @@ cache: true
 jdk:
  - oraclejdk7
 
-# Environment Variables
+# Before Installation
+before_install:
+ - ./install-dummykeys.sh
 
 # Installation
 install:
