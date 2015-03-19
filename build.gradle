@@ -21,7 +21,7 @@ apply plugin: 'com.android.application'
 android {
 
     compileSdkVersion 21
-    buildToolsVersion "21.1.1"
+    buildToolsVersion "21.1.2"
 
     // Since we have an Eclipse-style project, sourceSets defines the locations of files
     sourceSets {
@@ -70,11 +70,9 @@ dependencies {
         mavenCentral()
     }
     compile fileTree(dir: 'libs', include: '*.jar')
-    compile 'com.android.support:appcompat-v7:18.0.+'
+    compile 'com.android.support:support-v4:21.0.3'
     compile 'com.koushikdutta.ion:ion:2.+'
-    //compile 'com.google.android.gms:play-services:+'
-    //compile 'com.android.support:support-v4:19.+'
-    //compile 'com.android.support:appcompat-v7:19.+'
-    //compile 'com.android.support:support-annotations:+'
-    //compile files('libs/commons-lang3-3.3.2.jar')
+    // compile 'com.google.android.gms:play-services:+'
+    // compile 'com.android.support:appcompat-v7:19.+'
+    // compile 'com.android.support:support-annotations:+'
 }
