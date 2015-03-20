@@ -2,18 +2,26 @@ package com.jasonkliu.qualtricsapi;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class MainActivity extends Activity {
 
@@ -24,6 +32,7 @@ public class MainActivity extends Activity {
     }
 
     TextView display;
+    Button linksurvey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +40,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         display = (TextView) findViewById(R.id.tvDisplay);
+        linksurvey = (Button) findViewById(R.id.bLinkSurvey);
 
         Uri.Builder builder = new Uri.Builder();
         builder.scheme("https")
@@ -81,6 +91,60 @@ public class MainActivity extends Activity {
 
                             display.setText(new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create()
                                     .toJson(new JsonParser().parse(result.toString())));
+
+                            /* Result is of type:
+                             * {
+                             *    "Meta": {
+                             *        "Status": "Success",
+                             *        "Debug": ""
+                             *    },
+                             *    "Result": {
+                             *        "Surveys": [
+                             *            {
+                             *                "responses": "1",
+                             *                "SurveyType": "SV",
+                             *                "SurveyID": "SV_eidnumber",
+                             *                "SurveyName": "SurveyName",
+                             *                "SurveyDescription": "SurveyDescritption",
+                             *                "SurveyOwnerID": "UR_aidnumber",
+                             *                "SurveyStatus": "Active",
+                             *                "SurveyStartDate": "0000-00-00 00:00:00",
+                             *                "SurveyExpirationDate": "0000-00-00 00:00:00",
+                             *                "SurveyCreationDate": "2015-03-19 12:06:13",
+                             *                "CreatorID": "UR_aidnumber",
+                             *                "LastModified": "2015-03-19 12:07:06",
+                             *                "LastActivated": "2015-03-19 12:07:06",
+                             *                "UserFirstName": "User",
+                             *                "UserLastName": "Name"
+                             *            }
+                             *            {
+                             *                ...
+                             *            }
+                             *        ]
+                             *    }
+                             *}
+                             */
+
+                            JsonArray ja = result.getAsJsonObject("Result").getAsJsonArray("Surveys");
+
+                            for (final JsonElement type : ja) {
+                                final JsonObject coords = type.getAsJsonObject();
+                                Log.d("new", coords.getAsJsonObject().getAsJsonPrimitive("SurveyID").toString());
+                            }
+                            /*for (int i = 0; i < ja.size(); i++) {
+                                JsonElement inter = ja.get(i).getAsJsonObject();
+                                String test = inter.getAsJsonObject("SurveyID");
+                                Log.d("ja" + Integer.toString(i), ja.get(i).getAsJsonObject("SurveyID").toString());
+                            }*/
+                            Log.d("JSONObject", result.getAsJsonObject("Result").getAsJsonArray("Surveys").toString());
+                            linksurvey.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    //Uri uriUrl1 = Uri.parse(addrlist[newindex]);
+                                    //Intent launchBrowser1 = new Intent(Intent.ACTION_VIEW, uriUrl1);
+                                    //startActivity(launchBrowser1);
+                                }
+                            });
                         } else {
                             Log.d("JSONexcept", e.toString());
                         }
