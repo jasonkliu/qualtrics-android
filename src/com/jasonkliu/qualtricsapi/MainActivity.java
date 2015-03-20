@@ -20,9 +20,6 @@ import com.google.gson.JsonParser;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 public class MainActivity extends Activity {
 
     private boolean isOnline() {
