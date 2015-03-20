@@ -3,6 +3,7 @@ package com.jasonkliu.qualtricsapi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -39,6 +41,11 @@ public class MainActivity extends Activity {
 
         display = (TextView) findViewById(R.id.tvDisplay);
         linksurvey = (Button) findViewById(R.id.bLinkSurvey);
+
+        SharedPreferences settings = this.getSharedPreferences("prefs", Context.MODE_PRIVATE);
+        final int numSurveys = settings.getInt("numSurveys", 0);
+        final SharedPreferences.Editor editor = settings.edit();
+        Log.d("PrefSurveys", Integer.toString(numSurveys));
 
         Uri.Builder builder = new Uri.Builder();
         builder.scheme("https")
@@ -132,6 +139,15 @@ public class MainActivity extends Activity {
                             lastsurveyid = each.getAsJsonObject().getAsJsonPrimitive("SurveyID")
                                     .toString().replaceAll("\"", "");  // remove double quotes
                             Log.d("new", lastsurveyid);
+                        }
+
+                        if (numSurveys != ja.size()) {
+                            Toast.makeText(getApplicationContext(), "Changed number of Surveys: old "
+                                    + Integer.toString(numSurveys) + " new: " + Integer.toString(ja.size()),
+                                    Toast.LENGTH_LONG).show();
+                            editor.putInt("numSurveys", ja.size());
+                            editor.commit();
+                            Log.d("Prefscommit", Integer.toString(ja.size()));
                         }
 
                         // Set clickable button to last survey loaded
