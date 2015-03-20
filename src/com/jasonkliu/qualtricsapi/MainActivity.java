@@ -33,6 +33,7 @@ public class MainActivity extends Activity {
 
     TextView display;
     Button linksurvey;
+    String lastsurveyid = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,23 +127,22 @@ public class MainActivity extends Activity {
                              */
 
                             JsonArray ja = result.getAsJsonObject("Result").getAsJsonArray("Surveys");
+                            Log.d("JSONObject", ja.toString());
 
-                            for (final JsonElement type : ja) {
-                                final JsonObject coords = type.getAsJsonObject();
-                                Log.d("new", coords.getAsJsonObject().getAsJsonPrimitive("SurveyID").toString());
+
+
+                            for (final JsonElement survey : ja) {
+                                final JsonObject each = survey.getAsJsonObject();
+                                lastsurveyid = each.getAsJsonObject().getAsJsonPrimitive("SurveyID").toString().replaceAll("\"", "");  // remove double quotes
+                                Log.d("new", lastsurveyid);
                             }
-                            /*for (int i = 0; i < ja.size(); i++) {
-                                JsonElement inter = ja.get(i).getAsJsonObject();
-                                String test = inter.getAsJsonObject("SurveyID");
-                                Log.d("ja" + Integer.toString(i), ja.get(i).getAsJsonObject("SurveyID").toString());
-                            }*/
-                            Log.d("JSONObject", result.getAsJsonObject("Result").getAsJsonArray("Surveys").toString());
+
                             linksurvey.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    //Uri uriUrl1 = Uri.parse(addrlist[newindex]);
-                                    //Intent launchBrowser1 = new Intent(Intent.ACTION_VIEW, uriUrl1);
-                                    //startActivity(launchBrowser1);
+                                    Uri uriUrl1 = Uri.parse("https://yalesurvey.qualtrics.com/SE/?SID=" + lastsurveyid);
+                                    Intent launchBrowser1 = new Intent(Intent.ACTION_VIEW, uriUrl1);
+                                    startActivity(launchBrowser1);
                                 }
                             });
                         } else {
